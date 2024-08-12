@@ -104,3 +104,6 @@ Common Issues
 Docker Permission Errors: Ensure you have logged out and back in after the installation process to apply Docker group changes.
 Missing Python 3: If Python 3 is not installed, the script will prompt you to install it.
 
+
+KNOWN ISSUE : After the test completes and logging is written to the log file I print it out to the user. It is just a cosmetic thing I will address.
+
