@@ -43,12 +43,15 @@ To deploy and test NIMs:
 Run the main testing script:
 
 python3 nim_testing.py
+
 Follow the prompts to:
 Select the number of GPUs to use.
 Choose the number of requests to send (default is 10).
 Select whether to run tests on all NIMs or a specific NIM.
 Review and confirm the Docker command before proceeding.
-3. Generating Performance Charts
+
+3. Generating Performance Charts:
+
 After running tests, you can generate performance charts by selecting the relevant option in nim_testing.py or by running:
 
 
