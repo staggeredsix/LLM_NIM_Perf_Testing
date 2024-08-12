@@ -30,6 +30,7 @@ def monitor_logs(container_id, log_file):
         
         if "tokens per second" in decoded_line.lower():
             tokens_per_sec = float(decoded_line.split()[-2])  # Assume the metric is before 'tokens per second'
+            print(f"{RED}Container reported {tokens_per_sec} tokens per second.{RESET}")
             log_file.write(f"Container-reported tokens per second: {tokens_per_sec}\n")
 
     log_process.terminate()
@@ -63,14 +64,20 @@ def make_single_request(model_name, log_file, total_start_time):
             # Calculate tokens per second
             tokens_per_second = total_tokens_in_response / total_time
 
+            # Log to file
             log_file.write(f"Total Time for This Request: {total_time:.6f} seconds\n")
             log_file.write(f"Tokens per Second: {tokens_per_second:.6f}\n")
             log_file.write(f"Total Tokens: {total_tokens_in_response}\n\n")
+
+            # Print live feedback to the user
+            print(f"Request completed: {total_tokens_in_response} tokens generated in {total_time:.6f} seconds ({tokens_per_second:.6f} tokens/second)")
         else:
             log_file.write(f"Error: Received unexpected status code {response.status_code}\n")
             log_file.write(response.text + "\n\n")
+            print(f"Error: Received unexpected status code {response.status_code}")
     except Exception as e:
         log_file.write(f"Error during request: {e}\n\n")
+        print(f"Error during request: {e}")
 
 def run_test(img_name, gpus, api_key, local_nim_cache, output_dir, request_count=10):
     # Use the environment variable directly in the command
@@ -138,6 +145,7 @@ def run_test(img_name, gpus, api_key, local_nim_cache, output_dir, request_count
         log_file.write("Sequential Requests:\n")
         total_start_time = time.time_ns()  # Start the overall timer
         for i in range(request_count):
+            print(f"Sequential Request {i + 1}/{request_count}")
             make_single_request(model_name, log_file, total_start_time)
 
         # Concurrent Requests
@@ -159,3 +167,14 @@ def run_test(img_name, gpus, api_key, local_nim_cache, output_dir, request_count
 
     container_process.terminate()
     print("Test completed, and container has been terminated.")
+
+    # Cleanup all containers and prune them
+    cleanup_containers()
+
+def cleanup_containers():
+    # Stop all running containers
+    subprocess.run("docker stop $(docker ps -q)", shell=True)
+    # Remove all containers
+    subprocess.run("docker rm $(docker ps -a -q)", shell=True)
+    # Prune all containers
+    subprocess.run("docker container prune -f", shell=True)
