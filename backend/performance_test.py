@@ -26,12 +26,10 @@ def monitor_logs(container_id, log_file):
     
     for line in log_process.stdout:
         decoded_line = line.decode('utf-8').strip()
-        print(decoded_line)  # Print log output to the user
-        log_file.write(decoded_line + "\n")  # Write log to the log file
+        log_file.write(decoded_line + "\n")  # Write log to the log file only
         
         if "tokens per second" in decoded_line.lower():
             tokens_per_sec = float(decoded_line.split()[-2])  # Assume the metric is before 'tokens per second'
-            print(f"{RED}Container reported {tokens_per_sec} tokens per second.{RESET}")
             log_file.write(f"Container-reported tokens per second: {tokens_per_sec}\n")
 
     log_process.terminate()
@@ -68,18 +66,11 @@ def make_single_request(model_name, log_file, total_start_time):
             log_file.write(f"Total Time for This Request: {total_time:.6f} seconds\n")
             log_file.write(f"Tokens per Second: {tokens_per_second:.6f}\n")
             log_file.write(f"Total Tokens: {total_tokens_in_response}\n\n")
-
-            print(f"Total Time for This Request: {total_time:.6f} seconds")
-            print(f"Tokens per Second: {tokens_per_second:.6f}")
-            print(f"Total Tokens: {total_tokens_in_response}")
         else:
             log_file.write(f"Error: Received unexpected status code {response.status_code}\n")
             log_file.write(response.text + "\n\n")
-            print(f"Error: Received unexpected status code {response.status_code}")
-            print(response.text)
     except Exception as e:
         log_file.write(f"Error during request: {e}\n\n")
-        print(f"Error during request: {e}")
 
 def run_test(img_name, gpus, api_key, local_nim_cache, output_dir, request_count=10):
     # Use the environment variable directly in the command
@@ -99,7 +90,7 @@ def run_test(img_name, gpus, api_key, local_nim_cache, output_dir, request_count
     for line in iter(container_process.stdout.readline, b''):
         decoded_line = line.decode('utf-8').strip()
         nim_logs.append(decoded_line)
-        print(decoded_line)
+        print(decoded_line)  # Keep printing this for user feedback
 
         if "Uvicorn running on" in decoded_line:
             uvicorn_running = True
@@ -147,7 +138,6 @@ def run_test(img_name, gpus, api_key, local_nim_cache, output_dir, request_count
         log_file.write("Sequential Requests:\n")
         total_start_time = time.time_ns()  # Start the overall timer
         for i in range(request_count):
-            print(f"Sequential Request {i + 1}/{request_count}")
             make_single_request(model_name, log_file, total_start_time)
 
         # Concurrent Requests
