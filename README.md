@@ -1,11 +1,11 @@
 # NIM_Perf_Testing
-Basic NVIDIA NIM performance testing automation.
+Basic LLM NVIDIA NIM performance testing automation.
 
 ---------------------------------------------------------------------------------------------------------------------
 
 Project Overview:
 
-This project provides tools for deploying and testing NVIDIA Inference Models (NIMs) in a Docker environment. 
+This project provides tools for deploying and testing NVIDIA Inference Models (NIMs) in a Docker environment. This only applies to LLM NIMs.
 
 The project consists of several Python scripts that automate the installation of necessary dependencies, the deployment and testing of NIMs, and the generation of performance charts.
 
