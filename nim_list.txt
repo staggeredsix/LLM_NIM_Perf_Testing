@@ -1,2 +1,1 @@
 Mistral 7B Instruct|   nvcr.io/nim/mistralai/mistral-7b-instruct-v03:latest
-Llama3 70B Instruct|   nvcr.io/nim/llama3/llama-70b-instruct:latest
