@@ -81,12 +81,14 @@ def make_single_request(model_name, log_file, total_start_time):
         log_file.write(f"Error during request: {e}\n\n")
         print(f"Error during request: {e}")
 
-def run_test(img_name, gpus, gpu_index, api_key, local_nim_cache, output_dir, request_count=10):
+def run_test(img_name, gpus, api_key, local_nim_cache, output_dir, request_count=10):
+    # Use the environment variable directly in the command
     run_command = (
-        f"docker run --rm --gpus device={gpu_index} --shm-size=16GB "
-        f"-e NGC_API_KEY={api_key} -v {local_nim_cache}:/opt/nim/.cache "
+        f"docker run --rm --gpus {gpus} --shm-size=16GB "
+        f"-e NGC_API_KEY={os.environ['NGC_API_KEY']} -v {local_nim_cache}:/opt/nim/.cache "
         f"-u {os.getuid()}:{os.getgid()} -p 8000:8000 {img_name}"
     )
+    
     container_process = subprocess.Popen(run_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE)
 
     nim_logs = []
@@ -167,4 +169,3 @@ def run_test(img_name, gpus, gpu_index, api_key, local_nim_cache, output_dir, re
 
     container_process.terminate()
     print("Test completed, and container has been terminated.")
-
