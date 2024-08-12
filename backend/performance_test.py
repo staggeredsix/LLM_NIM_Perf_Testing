@@ -149,16 +149,20 @@ def run_test(img_name, gpus, api_key, local_nim_cache, output_dir, request_count
             make_single_request(model_name, log_file, total_start_time)
 
         # Concurrent Requests
+        print(f"\n{FLASH}{RED}Starting Concurrent Requests with {request_count} threads...{RESET}")
         log_file.write("\nConcurrent Requests:\n")
         threads = []
         total_start_time = time.time_ns()  # Restart the overall timer for concurrent requests
         for i in range(request_count):
+            print(f"Starting thread {i + 1}/{request_count} for concurrent request...")
             thread = threading.Thread(target=make_single_request, args=(model_name, log_file, total_start_time))
             threads.append(thread)
             thread.start()
 
         for thread in threads:
             thread.join()
+
+        print(f"{FLASH}{RED}Concurrent requests completed.{RESET}")
 
         # Wait for log monitoring to finish
         log_thread.join()
