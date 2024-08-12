@@ -75,7 +75,7 @@ Docker Image Paths: Modify paths or configurations in nim_testing.py or nim_list
 Performance Metrics: Adjust how performance is measured in performance_test.py.
 Chart Generation: Customize chart appearance and data processing in chart_generation.py.
 
-3. API Key Management
+4. API Key Management
 The NGC API key is stored in the same directory as nim_testing.py in an encrypted file named ngc_api_key.enc. The key is encrypted upon entry, and you will be prompted to enter a password to decrypt it when needed.
 
 To change the API key:
