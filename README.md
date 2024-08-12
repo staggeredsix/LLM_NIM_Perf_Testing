@@ -36,8 +36,11 @@ Open a terminal in the directory containing nim_testing.py.
 Run the installation script:
 
 python3 requirements_install.py
+
 This script will install Docker, NVIDIA Container Toolkit, NVIDIA NGC CLI, and the necessary Python packages. It will also add your user to the Docker group.
+
 2. Running NIM Tests
+
 To deploy and test NIMs:
 
 Run the main testing script:
@@ -45,9 +48,13 @@ Run the main testing script:
 python3 nim_testing.py
 
 Follow the prompts to:
+
 Select the number of GPUs to use.
+
 Choose the number of requests to send (default is 10).
+
 Select whether to run tests on all NIMs or a specific NIM.
+
 Review and confirm the Docker command before proceeding.
 
 3. Generating Performance Charts:
@@ -74,8 +81,11 @@ Example:
 Mistral 7B Instruct|nvcr.io/nim/mistralai/mistral-7b-instruct-v03:latest
 
 2. Editing Python Scripts
+
 Docker Image Paths: Modify paths or configurations in nim_testing.py or nim_list.txt.
+
 Performance Metrics: Adjust how performance is measured in performance_test.py.
+
 Chart Generation: Customize chart appearance and data processing in chart_generation.py.
 
 4. API Key Management
