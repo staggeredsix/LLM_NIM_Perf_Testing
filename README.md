@@ -1,20 +1,32 @@
 # NIM_Perf_Testing
 Basic NVIDIA NIM performance testing automation.
 
+---------------------------------------------------------------------------------------------------------------------
 
-Project Overview
+Project Overview:
+
 This project provides tools for deploying and testing NVIDIA Inference Models (NIMs) in a Docker environment. 
+
 The project consists of several Python scripts that automate the installation of necessary dependencies, the deployment and testing of NIMs, and the generation of performance charts.
 
 Files Included
 nim_testing.py: Main script for deploying and testing NIMs.
+
 performance_test.py: Script that handles performance testing of deployed NIMs.
+
 chart_generation.py: Generates performance charts based on test results.
+
 requirements_install.py: Installs necessary dependencies including Docker, NVIDIA Container Toolkit, NVIDIA NGC CLI, and Python packages.
+
 requirements.txt: Lists all required Python packages for the scripts.
+
 README.txt: This documentation file.
+
 nim_list.txt: Stores the list of available NIMs for testing.
+
 ngc_api_key.enc: Stores the encrypted NGC API key (generated when the key is entered).
+
+---------------------------------------------------------------------------------------------------------------------
 
 Usage
 1. Install Required Software and Python Packages
@@ -43,6 +55,9 @@ After running tests, you can generate performance charts by selecting the releva
 python3 chart_generation.py
 The charts will be saved in the same directory as nim_testing.py and will be based on the logs generated during the tests.
 
+
+---------------------------------------------------------------------------------------------------------------------
+
 Configuration and Editing
 1. Adding New NIMs Manually
 To add new NIMs without running the script:
@@ -67,6 +82,8 @@ To change the API key:
 
 Delete the existing ngc_api_key.enc file.
 Run nim_testing.py and enter the new API key when prompted.
+
+---------------------------------------------------------------------------------------------------------------------
 
 Troubleshooting:
 
