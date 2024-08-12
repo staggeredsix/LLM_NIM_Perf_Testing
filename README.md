@@ -3,7 +3,8 @@ Basic NVIDIA NIM performance testing automation.
 
 
 Project Overview
-This project provides tools for deploying and testing NVIDIA Inference Models (NIMs) in a Docker environment. The project consists of several Python scripts that automate the installation of necessary dependencies, the deployment and testing of NIMs, and the generation of performance charts.
+This project provides tools for deploying and testing NVIDIA Inference Models (NIMs) in a Docker environment. 
+The project consists of several Python scripts that automate the installation of necessary dependencies, the deployment and testing of NIMs, and the generation of performance charts.
 
 Files Included
 nim_testing.py: Main script for deploying and testing NIMs.
@@ -14,6 +15,7 @@ requirements.txt: Lists all required Python packages for the scripts.
 README.txt: This documentation file.
 nim_list.txt: Stores the list of available NIMs for testing.
 ngc_api_key.enc: Stores the encrypted NGC API key (generated when the key is entered).
+
 Usage
 1. Install Required Software and Python Packages
 Before running any tests or deployments, ensure that all required software and Python packages are installed.
@@ -52,10 +54,12 @@ Add a new line for each NIM in the following format:
 Example:
 
 Mistral 7B Instruct|nvcr.io/nim/mistralai/mistral-7b-instruct-v03:latest
+
 2. Editing Python Scripts
 Docker Image Paths: Modify paths or configurations in nim_testing.py or nim_list.txt.
 Performance Metrics: Adjust how performance is measured in performance_test.py.
 Chart Generation: Customize chart appearance and data processing in chart_generation.py.
+
 3. API Key Management
 The NGC API key is stored in the same directory as nim_testing.py in an encrypted file named ngc_api_key.enc. The key is encrypted upon entry, and you will be prompted to enter a password to decrypt it when needed.
 
@@ -63,7 +67,9 @@ To change the API key:
 
 Delete the existing ngc_api_key.enc file.
 Run nim_testing.py and enter the new API key when prompted.
-Troubleshooting
+
+Troubleshooting:
+
 Common Issues
 Docker Permission Errors: Ensure you have logged out and back in after the installation process to apply Docker group changes.
 Missing Python 3: If Python 3 is not installed, the script will prompt you to install it.
