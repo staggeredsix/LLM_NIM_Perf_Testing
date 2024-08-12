@@ -2,15 +2,15 @@ import os
 import subprocess
 import logging
 from backend.install_tools import install_tools, check_python_version, install_pip, check_ubuntu_version, install_python_packages
-from backend.api_key_management import save_api_key, read_api_key
+from backend.api_key_management import read_api_key
 from backend.nim_management import add_nim, list_nims
-from backend.performance_test import run_test  # Importing run_test
+from backend.performance_test import run_test
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def prune_docker_containers():
-    confirm = input("Do you want to stop all running containers and prune them? If you choose no, the script my fail. (y/n): ").strip().lower()
+    confirm = input("Do you want to stop all running containers and prune them? If you choose no, the script may fail. (y/n): ").strip().lower()
     if confirm == 'y':
         logging.info("Stopping all running containers...")
         subprocess.run("docker stop $(docker ps -q)", shell=True)
@@ -43,6 +43,9 @@ def menu():
     print("Enter Password for API Key Decryption")
     api_key = read_api_key(api_key_file)
 
+    # Set the API key as an environment variable
+    os.environ["NGC_API_KEY"] = api_key
+
     options = ["Run tests against all NIMs", "Run test against a specific NIM", "Add a new NIM", "Quit"]
     while True:
         print("Select an option:")
@@ -52,7 +55,6 @@ def menu():
 
         if choice == 1:
             gpus = int(input("Enter the number of GPUs to use: "))
-            gpu_index = 0  # Adjust as needed for multiple GPUs
             request_count = input("Enter the number of requests to send (press Enter to use default of 10): ")
             request_count = int(request_count) if request_count else 10
 
@@ -65,12 +67,13 @@ def menu():
                         logging.info(f"Docker image: {img_name.lower()}")
                         confirm_run = input(f"Proceed with running {model} using image {img_name.lower()}? (y/n): ").strip().lower()
                         if confirm_run == 'y':
-                            run_test(img_name.lower(), gpus, gpu_index, api_key, local_nim_cache, output_dir, request_count)
+                            run_test(img_name.lower(), gpus, os.environ["NGC_API_KEY"], local_nim_cache, output_dir, request_count)
                         else:
                             logging.info("User cancelled the operation.")
         elif choice == 2:
             list_nims(nim_file)
             nim_number = int(input("Enter the NIM number: "))
+            gpus = int(input("Enter the number of GPUs to use: "))
             request_count = input("Enter the number of requests to send (press Enter to use default of 10): ")
             request_count = int(request_count) if request_count else 10
 
@@ -82,9 +85,7 @@ def menu():
                 logging.info(f"Docker image: {img_name.lower()}")
                 confirm_run = input(f"Proceed with running {model} using image {img_name.lower()}? (y/n): ").strip().lower()
                 if confirm_run == 'y':
-                    gpus = int(input("Enter the number of GPUs to use: "))
-                    gpu_index = int(input(f"Enter the GPU index to use (0-{gpus - 1}): "))
-                    run_test(img_name.lower(), gpus, gpu_index, api_key, local_nim_cache, output_dir, request_count)
+                    run_test(img_name.lower(), gpus, os.environ["NGC_API_KEY"], local_nim_cache, output_dir, request_count)
                 else:
                     logging.info("User cancelled the operation.")
         elif choice == 3:
