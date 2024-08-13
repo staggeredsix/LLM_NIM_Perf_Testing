@@ -105,3 +105,5 @@ Docker Permission Errors: Ensure you have logged out and back in after the insta
 Missing Python 3: If Python 3 is not installed, the script will prompt you to install it.
 Graph creation is likely broken, logging works.
 
+KNOWN ISSUES : requirements_install.py is broken. This is a lazy engineer script, I will fix it at some point.
+
