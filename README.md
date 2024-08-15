@@ -35,7 +35,11 @@ Before running any tests or deployments, ensure that all required software and P
 Open a terminal in the directory containing nim_testing.py.
 Run the installation script:
 
-python3 requirements_install.py
+sudo python3 requirements_install.py
+
+This will installer docker and attempt to add your user to the docker group, this seems to fail. Add yourself manually sudo usermod -aG docker $USER then exit the terminal and log back in.
+
+Log into nvcr.io using docker login nvcr.io  user $oauthtoken  password NGC API key.
 
 This script will install Docker, NVIDIA Container Toolkit, NVIDIA NGC CLI, and the necessary Python packages. It will also add your user to the Docker group.
 
