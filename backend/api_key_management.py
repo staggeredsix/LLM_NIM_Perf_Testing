@@ -18,7 +18,7 @@ def read_api_key(api_key_file):
         print("API key file not found!")
         return save_api_key(api_key_file)
     else:
-        print"(Enter your password to decrypt your API key.")
+        print("Enter your password to decrypt your API key.")
         decrypted_key = subprocess.check_output(f"openssl enc -aes-256-cbc -pbkdf2 -d -a -in {api_key_file}", shell=True)
         return decrypted_key.decode().strip()
 
