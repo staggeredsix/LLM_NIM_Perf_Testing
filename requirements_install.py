@@ -29,12 +29,6 @@ def install_nvidia_toolkit():
     run_command("sudo apt-get install -y nvidia-container-toolkit", "Failed to install NVIDIA Container Toolkit")
     run_command("sudo systemctl restart docker", "Failed to restart Docker")
 
-def install_ngc_cli():
-    print("Installing NVIDIA NGC CLI...")
-    run_command("wget -O ngccli_cat_linux.zip https://ngc.nvidia.com/downloads/ngccli_cat_linux.zip", "Failed to download NVIDIA NGC CLI")
-    run_command("unzip ngccli_cat_linux.zip", "Failed to unzip NVIDIA NGC CLI")
-    run_command("chmod u+x ngc", "Failed to make NGC CLI executable")
-
 def install_python_packages():
     print("Installing Python packages...")
     run_command("pip install -r requirements.txt", "Failed to install Python packages from requirements.txt")
@@ -65,7 +59,6 @@ if __name__ == "__main__":
     check_python()
     install_docker()
     install_nvidia_toolkit()
-    install_ngc_cli()
     install_python_packages()
     add_user_to_docker_group()
 
