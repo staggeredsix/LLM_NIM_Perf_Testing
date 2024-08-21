@@ -43,6 +43,8 @@ python3 requirements_install.py
 
 This script will install Docker, NVIDIA Container Toolkit, NVIDIA NGC CLI, and the necessary Python packages. It will also add your user to the Docker group.
 
+Log into nvcr.io using your NGC API key : docker login nvcr.io $oauthtoken yourapikey
+
 2. Running NIM Tests
 
 To deploy and test NIMs:
