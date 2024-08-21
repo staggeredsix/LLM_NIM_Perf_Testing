@@ -26,6 +26,10 @@ nim_list.txt: Stores the list of available NIMs for testing.
 
 ngc_api_key.enc: Stores the encrypted NGC API key (generated when the key is entered).
 
+All tests are stored in backend/tests/ and are broken up into modules. They should be easy to modify/review.
+
+Yes - the script asks you to kill containers when you launch and when you exit. This is to ensure the system is clean before and after running a test.
+
 ---------------------------------------------------------------------------------------------------------------------
 
 Usage
