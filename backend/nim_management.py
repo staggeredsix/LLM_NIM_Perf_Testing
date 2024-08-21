@@ -1,12 +1,10 @@
-# backend/nim_management.py
-
 import os
 
 def add_nim(nim_file):
     nim_name = input("Enter the NIM name (e.g., mistral-7b-instruct): ").lower()
     img_name = input("Enter the Docker image name (e.g., nvcr.io/nim/mistralai/mistral-7b-instruct-v03:latest): ").lower()
     with open(nim_file, "a") as f:
-        f.write(f"{nim_name}:{img_name}\n")
+        f.write(f"{nim_name}|{img_name}\n")  # Corrected delimiter from `:` to `|`
     print("NIM added.")
 
 def list_nims(nim_file):

@@ -1,32 +1,3 @@
-import os
-import subprocess
-import logging
-from backend.install_tools import install_tools, check_python_version, install_pip, check_ubuntu_version, install_python_packages
-from backend.api_key_management import read_api_key
-from backend.nim_management import add_nim, list_nims
-from backend.performance_test import run_test
-
-# Configure logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-
-def prune_docker_containers():
-    confirm = input("Do you want to stop all running containers and prune them? If you choose no, the script may fail. (y/n): ").strip().lower()
-    if confirm == 'y':
-        logging.info("Stopping all running containers...")
-        subprocess.run("docker stop $(docker ps -q)", shell=True)
-        logging.info("Pruning all containers...")
-        subprocess.run("docker container prune -f", shell=True)
-        logging.info("All containers stopped and pruned.")
-
-def kill_all_containers():
-    confirm = input("Do you want to kill all running containers? (y/n): ").strip().lower()
-    if confirm == 'y':
-        logging.info("Killing all running containers...")
-        subprocess.run("docker stop $(docker ps -q)", shell=True)
-        logging.info("Purging all containers...")
-        subprocess.run("docker rm $(docker ps -a -q)", shell=True)
-        logging.info("All containers killed and purged.")
-
 def menu():
     # Get the directory where nim_testing.py resides
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -68,6 +39,16 @@ def menu():
                         confirm_run = input(f"Proceed with running {model} using image {img_name.lower()}? (y/n): ").strip().lower()
                         if confirm_run == 'y':
                             run_test(img_name.lower(), gpus, os.environ["NGC_API_KEY"], local_nim_cache, output_dir, request_count)
+
+                            # Ask if the user wants to run Phase 1
+                            run_phase1 = input("Do you want to run sequential and concurrent tests without streaming tokens? (y/n): ").strip().lower()
+                            if run_phase1 == 'y':
+                                run_test_phase1(model_name, request_count, log_file)
+
+                            # Ask if the user wants to run the stress test
+                            run_stress_test = input("Do you want to run a stress test to see how many concurrent requests your system can handle? This will test until the model is outputting 10 tokens per second. It may KILL your GPU because of the amount of load. Do this only if you are okay with murdering hardware. (y/n): ").strip().lower()
+                            if run_stress_test == 'y':
+                                run_stress_test_phase(model_name, log_file, request_count, max_processes, log_filename)
                         else:
                             logging.info("User cancelled the operation.")
         elif choice == 2:
@@ -86,6 +67,16 @@ def menu():
                 confirm_run = input(f"Proceed with running {model} using image {img_name.lower()}? (y/n): ").strip().lower()
                 if confirm_run == 'y':
                     run_test(img_name.lower(), gpus, os.environ["NGC_API_KEY"], local_nim_cache, output_dir, request_count)
+
+                    # Ask if the user wants to run Phase 1
+                    run_phase1 = input("Do you want to run sequential and concurrent tests without streaming tokens? (y/n): ").strip().lower()
+                    if run_phase1 == 'y':
+                        run_test_phase1(model_name, request_count, log_file)
+
+                    # Ask if the user wants to run the stress test
+                    run_stress_test = input("Do you want to run a stress test to see how many concurrent requests your system can handle? This will test until the model is outputting 10 tokens per second. It may KILL your GPU because of the amount of load. Do this only if you are okay with murdering hardware. (y/n): ").strip().lower()
+                    if run_stress_test == 'y':
+                        run_stress_test_phase(model_name, log_file, request_count, max_processes, log_filename)
                 else:
                     logging.info("User cancelled the operation.")
         elif choice == 3:
@@ -95,13 +86,4 @@ def menu():
             break
         else:
             logging.info("Invalid option.")
-
-if __name__ == "__main__":
-    install_tools()
-    check_python_version()
-    install_pip()
-    is_ubuntu_24xx = check_ubuntu_version()
-    install_python_packages(is_ubuntu_24xx)
-    prune_docker_containers()
-    menu()
 

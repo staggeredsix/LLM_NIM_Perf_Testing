@@ -34,6 +34,7 @@ def process_log_file(file_path):
             value = float(line.split(":")[1].strip().split()[0])
             sequential_times.append(value)
         elif "Concurrent" in line:
+            value = float(line.split(":")[1].strip().split()[0])
             concurrent_times.append(value)
 
     if sequential_times:
@@ -49,12 +50,12 @@ def generate_chart(model_name, times, title):
     plt.xlabel("Request Number")
     plt.ylabel("Time (seconds)")
     plt.grid(True)
-    
-    # Save the chart to the same directory
+
+    # Save the chart to the output directory
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    chart_filename = os.path.join(script_dir, f"{model_name}_{title.replace(' ', '_')}.png")
+    output_dir = os.path.join(script_dir, "performance_results")
+    chart_filename = os.path.join(output_dir, f"{model_name}_{title.replace(' ', '_')}.png")
     plt.savefig(chart_filename)
     plt.close()
     print(f"Chart saved to {chart_filename}")
-
 

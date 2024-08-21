@@ -50,14 +50,16 @@ def check_python():
         print("pip for Python 3 is not installed. Installing pip3...")
         run_command("sudo apt-get install -y python3-pip", "Failed to install pip3")
 
+def add_user_to_docker_group():
+    print("Adding current user to Docker group...")
+    run_command("sudo usermod -aG docker $USER", "Failed to add user to Docker group")
+    print("Please log out and back in for the Docker group changes to take effect.")
 
 if __name__ == "__main__":
     check_python()
     install_docker()
     install_nvidia_toolkit()
     install_python_packages()
+    add_user_to_docker_group()
 
     print("All required software has been installed successfully.")
-    print("After this script exits add yourself to the docker user group if you are not root.")
-    print("sudo usermod -aG docker $USER")
-    print("Exit the terminal and log back in to take effect.")

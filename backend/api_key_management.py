@@ -1,13 +1,12 @@
-# backend/api_key_management.py
-
 import subprocess
 import getpass
 import os
 
 def save_api_key(api_key_file):
-    api_key = getpass.getpass("Enter your NGC API key, it will be ecrypted and stored.: ")
+    api_key = getpass.getpass("Enter your NGC API key, it will be encrypted and stored: ")
     print("Enter a password to encrypt your API key.")
-    encrypted_key = subprocess.check_output(f"echo {api_key} | openssl enc -aes-256-cbc -pbkdf2 -a -salt", shell=True)
+    # Using shell=True is a potential security risk; it's better to pass the command as a list to avoid shell injection.
+    encrypted_key = subprocess.check_output(["openssl", "enc", "-aes-256-cbc", "-pbkdf2", "-a", "-salt", "-pass", f"pass:{api_key}"], input=api_key.encode())
     with open(api_key_file, "wb") as f:
         f.write(encrypted_key)
     print("API key saved.")
@@ -19,6 +18,7 @@ def read_api_key(api_key_file):
         return save_api_key(api_key_file)
     else:
         print("Enter your password to decrypt your API key.")
-        decrypted_key = subprocess.check_output(f"openssl enc -aes-256-cbc -pbkdf2 -d -a -in {api_key_file}", shell=True)
+        # Using shell=True is a potential security risk; it's better to pass the command as a list to avoid shell injection.
+        decrypted_key = subprocess.check_output(["openssl", "enc", "-aes-256-cbc", "-pbkdf2", "-d", "-a", "-in", api_key_file])
         return decrypted_key.decode().strip()
 

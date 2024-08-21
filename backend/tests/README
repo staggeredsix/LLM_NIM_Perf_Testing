@@ -1,0 +1,7 @@
+All of the functions for testing have been broken down into modules here.
+Modification of any tests, detection of models, calculatons of ITL/TPS/TTFT can be found here.
+File names exactly describe what each file does.
+performance_test.py in the directory above this one contains calls to run each on of these functions.
+This has been broken down for simplicity. One monolithic performance_test.py script was far too complex to deal with.
+
+ITL is calculated after we get the first token. Tokens 2,3,4,5 and 6 are measured for ITL. The rest of the tokens are ignored. You can modify this in the ITL calculation script.
