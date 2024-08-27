@@ -1,3 +1,7 @@
+
+I commited some serious bugs to this testing script.... because I was not paying attention. I will update it but I am now working on a fork of vllm benchmark.
+
+
 # LLM_NIM_Perf_Testing
 Basic LLM NVIDIA NIM performance testing automation.
 
